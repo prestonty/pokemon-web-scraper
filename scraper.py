@@ -54,6 +54,7 @@ for item in soup.find_all('a'):
 
 for item in soup.find_all('img'):
     # item['src'] returns excess ".." at the front of the string and we need to put "https://www.pokencyclopedia.info/" before the string to get the proper src
+    # Example /sprites/gen5/spr_black-white/spr_bw_
     item['src'] = "https://www.pokencyclopedia.info/" + item['src'][2:]
 
     # start counting the index when you find bulbasaur's sprite (and not other random image files on the website)
@@ -74,8 +75,24 @@ for item in soup.find_all('img'):
         ("https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_0"+str(index)+"_f.png" == str(item['src']))):
             pokeData["pokemon" + str(index)]['image'] = item['src']
             index+=1
-    elif(("https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_0"+str(index)+".png" == str(item['src'])) or
-        ("https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_0"+str(index)+"_f.png" == str(item['src']))):
+    elif(("https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+".png" == str(item['src'])) or
+        ("https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"_f.png" == str(item['src']))): 
+        pokeData["pokemon" + str(index)]['image'] = item['src']
+        index+=1
+    # THERE ARE SPECIAL FILE NAMES FOR SPECIAL POKEMON. This means that before the .png, there is a strange word to differentiate. E.g. unown (--exclamation), burmy (-plant), cherrim, shellos, gastrodon
+    elif("https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"--exclamation.png" == str(item['src'])
+         or "https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"-plant.png" == str(item['src'])
+         or "https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"-overcast.png" == str(item['src'])
+         or "https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"-west.png" == str(item['src'])
+         or "https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"-altered.png" == str(item['src'])
+         or "https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"-land.png" == str(item['src'])
+         or "https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"-red-striped.png" == str(item['src'])
+         or "https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"-standard.png" == str(item['src'])
+         or "https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"-spring.png" == str(item['src'])
+         or "https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"-incarnate.png" == str(item['src'])
+         or "https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"-ordinary.png" == str(item['src'])
+         or "https://www.pokencyclopedia.info//sprites/gen5/spr_black-white/spr_bw_"+str(index)+"-aria.png" == str(item['src'])):
+        # Unown is a special case, its file name ends with --exclamation.png for some strange reason
         pokeData["pokemon" + str(index)]['image'] = item['src']
         index+=1
 
